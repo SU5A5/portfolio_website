@@ -193,7 +193,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
         </AnimatePresence>
       </nav>
 
-      <main className="pt-16 md:pt-24 pb-24 px-4 md:px-6 max-w-5xl mx-auto">
+      <main className="pt-20 md:pt-32 pb-24 px-4 md:px-6 max-w-5xl mx-auto">
         
         {/* Hero Section */}
         <section className="min-h-[70vh] flex flex-col justify-center">
