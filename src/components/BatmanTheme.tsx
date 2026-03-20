@@ -37,7 +37,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
   };
 
   return (
-    <div className="min-h-screen font-sans selection:bg-bat-red selection:text-white relative bg-bat-black">
+    <div className="min-h-screen font-sans selection:bg-bat-red selection:text-white relative" style={{ background: 'radial-gradient(ellipse at top left, #1a0a0a 0%, #0d0000 40%, #000000 75%)' }}>
       <AnimatePresence>
         {toast && (
           <motion.div
@@ -57,17 +57,16 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative z-10">
           <div className="flex items-center gap-3">
             {/* Custom Logo Placeholder */}
-            <button onClick={toggleTheme} className="w-12 h-12 flex items-center justify-center bg-bat-gray border border-white/10 relative overflow-hidden group cursor-pointer" title="Switch to Professional Theme">
-              <div className="absolute inset-0 border-l-2 border-bat-red transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+            <button onClick={toggleTheme} className="group cursor-pointer" title="Switch to Professional Theme">
               {!logoError ? (
-                <img 
-                  src="/batman-logo.png" 
-                  alt="Logo" 
-                  className="w-8 h-8 object-contain opacity-90 group-hover:opacity-100 relative z-10 logo-red-hue"
+                <img
+                  src="/batman-logo.png"
+                  alt="Logo"
+                  className="w-24 h-24 object-contain opacity-90 group-hover:opacity-100 logo-red-hue"
                   onError={() => setLogoError(true)}
                 />
               ) : (
-                <img src="/batman.png" alt="Logo" className="w-8 h-8 object-contain relative z-10 drop-shadow-[0_0_8px_rgba(255,0,0,0.8)] logo-red-hue" />
+                <img src="/batman.png" alt="Logo" className="w-24 h-24 object-contain logo-red-hue" />
               )}
             </button>
             <span className="font-display font-bold tracking-widest text-lg uppercase text-white">
@@ -161,17 +160,16 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
               className="hidden lg:block lg:col-span-4"
             >
               <div className="hud-panel p-8 scanline">
-                <div className="w-32 h-32 mx-auto mb-8 border border-white/10 flex items-center justify-center bg-bat-black relative group">
-                  <div className="absolute inset-0 bg-bat-red/5 group-hover:bg-bat-red/10 transition-colors"></div>
+                <div className="flex items-center justify-center mb-8">
                   {!logoError ? (
-                    <img 
-                      src="/batman-logo.png" 
-                      className="w-24 h-24 object-contain relative z-10 transition-transform duration-500 group-hover:scale-110 logo-red-hue" 
+                    <img
+                      src="/batman-logo.png"
+                      className="w-64 h-64 object-contain transition-transform duration-500 hover:scale-110 logo-red-hue"
                       alt="Logo"
                       onError={() => setLogoError(true)}
                     />
                   ) : (
-                    <img src="/batman.png" alt="Logo" className="w-24 h-24 object-contain relative z-10 drop-shadow-[0_0_15px_rgba(255,0,0,0.8)] transition-transform duration-500 group-hover:scale-110 logo-red-hue" />
+                    <img src="/batman.png" alt="Logo" className="w-64 h-64 object-contain transition-transform duration-500 hover:scale-110 logo-red-hue" />
                   )}
                 </div>
                 <div className="space-y-4 font-mono text-[10px] text-white/40 tracking-widest uppercase">

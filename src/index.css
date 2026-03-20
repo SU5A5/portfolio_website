@@ -120,9 +120,9 @@ body {
 
 /* Red Hue Filter for Logo */
 .logo-red-hue {
-  filter: sepia(1) hue-rotate(315deg) saturate(500%) brightness(0.8) drop-shadow(0 0 8px rgba(229, 9, 20, 0.5));
+  filter: sepia(1) hue-rotate(315deg) saturate(1000%) brightness(1.1);
   transition: all 0.3s ease;
 }
 .logo-red-hue:hover {
-  filter: sepia(1) hue-rotate(315deg) saturate(600%) brightness(1) drop-shadow(0 0 15px rgba(229, 9, 20, 0.8));
+  filter: sepia(1) hue-rotate(315deg) saturate(1200%) brightness(1.3);
 }
