@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@300;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-bat-black: #000000;
+  --color-bat-gray: #0a0a0a;
+  --color-bat-light: #141414;
+  --color-bat-red: #E50914; /* Sharp, premium crimson red */
+}
+
+body {
+  background-color: var(--color-bat-black);
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100px 100px;
+  background-position: center center;
+}
+
+::selection {
+  background-color: var(--color-bat-red);
+  color: #ffffff;
+}
+
+/* Sleek technical scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bat-black);
+  border-left: 1px solid rgba(255,255,255,0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-bat-red);
+}
+
+/* Sci-Fi HUD Panel */
+.hud-panel {
+  position: relative;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+.hud-panel::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: -1px;
+  width: 8px; height: 8px;
+  border-top: 1px solid var(--color-bat-red);
+  border-left: 1px solid var(--color-bat-red);
+  transition: all 0.3s ease;
+}
+.hud-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 8px; height: 8px;
+  border-bottom: 1px solid var(--color-bat-red);
+  border-right: 1px solid var(--color-bat-red);
+  transition: all 0.3s ease;
+}
+.hud-panel:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(20, 20, 20, 0.9);
+}
+.hud-panel:hover::before, .hud-panel:hover::after {
+  width: 16px; height: 16px;
+}
+
+/* Scanline effect for specific elements */
+.scanline {
+  position: relative;
+  overflow: hidden;
+}
+.scanline::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--color-bat-red);
+  box-shadow: 0 0 10px var(--color-bat-red);
+  animation: scan 4s linear infinite;
+  opacity: 0.5;
+}
+@keyframes scan {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+
+/* Technical border */
+.tech-border {
+  border-left: 2px solid var(--color-bat-red);
+  padding-left: 1rem;
+}
+
+/* Red Hue Filter for Logo */
+.logo-red-hue {
+  filter: sepia(1) hue-rotate(315deg) saturate(500%) brightness(0.8) drop-shadow(0 0 8px rgba(229, 9, 20, 0.5));
+  transition: all 0.3s ease;
+}
+.logo-red-hue:hover {
+  filter: sepia(1) hue-rotate(315deg) saturate(600%) brightness(1) drop-shadow(0 0 15px rgba(229, 9, 20, 0.8));
+}
