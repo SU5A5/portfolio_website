@@ -19,7 +19,9 @@ import {
   Phone,
   Linkedin,
   Check,
-  Sun
+  Sun,
+  Menu,
+  X
 } from 'lucide-react';
 
 interface BatmanThemeProps {
@@ -29,6 +31,7 @@ interface BatmanThemeProps {
 export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
   const [toast, setToast] = useState<string | null>(null);
   const [logoError, setLogoError] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -62,11 +65,11 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
                 <img
                   src={`${import.meta.env.BASE_URL}batman.png`}
                   alt="Logo"
-                  className="w-24 h-24 object-contain opacity-90 group-hover:opacity-100 logo-red-hue"
+                  className="w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 object-contain opacity-90 group-hover:opacity-100 logo-red-hue"
                   onError={() => setLogoError(true)}
                 />
               ) : (
-                <img src={`${import.meta.env.BASE_URL}batman.png`} alt="Logo" className="w-24 h-24 object-contain logo-red-hue" />
+                <img src={`${import.meta.env.BASE_URL}batman.png`} alt="Logo" className="w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 object-contain logo-red-hue" />
               )}
             </button>
             <span className="font-display font-bold tracking-widest text-lg uppercase text-white">
@@ -79,13 +82,13 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
             <button onClick={() => document.getElementById('case-files')?.scrollIntoView({ behavior: 'smooth' })} className="text-white/60 hover:text-white transition-colors">Projects</button>
             <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="text-white/60 hover:text-white transition-colors">Contact</button>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
             <button
               onClick={toggleTheme}
-              className="flex items-center gap-2 border border-white/20 bg-white/5 text-white/70 hover:text-white hover:border-white/40 px-4 py-2 font-mono text-xs tracking-widest uppercase transition-all duration-300"
+              className="flex items-center gap-2 border border-white/20 bg-white/5 text-white/70 hover:text-white hover:border-white/40 px-3 py-2 md:px-4 font-mono text-xs tracking-widest uppercase transition-all duration-300"
             >
               <Sun className="w-4 h-4" />
-              Light
+              <span className="hidden sm:inline">Light</span>
             </button>
             <a href="/resume.pdf" download className="hidden md:flex items-center gap-2 border border-bat-red/50 bg-bat-red/10 text-bat-red hover:bg-bat-red hover:text-white px-4 py-2 font-mono text-xs tracking-widest uppercase transition-all duration-300">
               <FileText className="w-4 h-4" /> Resume
@@ -93,11 +96,57 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
             <div className="hidden lg:flex items-center gap-4 font-mono text-[10px] text-white/70 tracking-widest ml-4 border-l border-white/10 pl-4">
               <span className="flex items-center gap-2 text-bat-red"><Activity className="w-3 h-3" /> SYS.ONLINE</span>
             </div>
+            {/* Hamburger button — mobile only */}
+            <button
+              onClick={() => setMenuOpen(prev => !prev)}
+              className="md:hidden border border-white/20 bg-white/5 text-white/70 hover:text-white p-2 transition-colors"
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile drawer */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden overflow-hidden border-t border-white/10 bg-bat-black/95 backdrop-blur-md"
+            >
+              <div className="flex flex-col gap-1 px-6 py-4 font-mono text-xs tracking-widest uppercase">
+                {[
+                  { label: 'Skills', id: 'core-directives' },
+                  { label: 'Experience', id: 'service-records' },
+                  { label: 'Projects', id: 'case-files' },
+                  { label: 'Contact', id: 'contact' },
+                ].map(({ label, id }) => (
+                  <button
+                    key={id}
+                    onClick={() => { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); setMenuOpen(false); }}
+                    className="text-left text-white/60 hover:text-white py-3 border-b border-white/5 transition-colors"
+                  >
+                    {label}
+                  </button>
+                ))}
+                <a
+                  href="/resume.pdf"
+                  download
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-2 text-bat-red py-3 hover:text-white transition-colors"
+                >
+                  <FileText className="w-4 h-4" /> Resume
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
-      <main className="pt-32 pb-24 px-6 max-w-7xl mx-auto relative z-10">
+      <main className="pt-20 md:pt-32 pb-24 px-4 md:px-6 max-w-7xl mx-auto relative z-10">
         
         {/* Hero Section */}
         <section className="min-h-[80vh] flex flex-col justify-center">
@@ -113,7 +162,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
                 <span>/// IDENTITY_CONFIRMED: SUHAS_GAJANANA</span>
               </div>
               
-              <h1 className="font-display text-6xl md:text-8xl lg:text-9xl font-bold leading-[0.85] tracking-tighter mb-8 uppercase text-white">
+              <h1 className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-9xl font-bold leading-[0.85] tracking-tighter mb-8 uppercase text-white">
                 Suhas <br />
                 <span className="text-white/40">Gajanana.</span>
               </h1>
@@ -124,29 +173,29 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-6">
-                <button 
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
+                <button
                   onClick={() => document.getElementById('case-files')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="hud-panel text-white font-mono text-xs px-8 py-4 uppercase tracking-widest flex items-center gap-3 group"
+                  className="hud-panel text-white font-mono text-xs px-4 py-2 md:px-8 md:py-4 uppercase tracking-widest flex items-center gap-3 group"
                 >
                   <span className="text-bat-red group-hover:translate-x-1 transition-transform">Access Case Files</span>
                   <ChevronRight className="w-4 h-4 text-bat-red opacity-50 group-hover:opacity-100 transition-opacity" />
                 </button>
-                <button 
+                <button
                   onClick={() => document.getElementById('service-records')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="border border-white/10 bg-bat-gray text-white/60 hover:text-white hover:border-white/30 font-mono text-xs px-8 py-4 uppercase tracking-widest transition-all duration-300 flex items-center gap-3"
+                  className="border border-white/10 bg-bat-gray text-white/60 hover:text-white hover:border-white/30 font-mono text-xs px-4 py-2 md:px-8 md:py-4 uppercase tracking-widest transition-all duration-300 flex items-center gap-3"
                 >
                   <Briefcase className="w-4 h-4" /> Service Records
                 </button>
-                <button 
+                <button
                   onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="border border-white/10 bg-bat-gray text-white/60 hover:text-white hover:border-white/30 font-mono text-xs px-8 py-4 uppercase tracking-widest transition-all duration-300 flex items-center gap-3"
+                  className="border border-white/10 bg-bat-gray text-white/60 hover:text-white hover:border-white/30 font-mono text-xs px-4 py-2 md:px-8 md:py-4 uppercase tracking-widest transition-all duration-300 flex items-center gap-3"
                 >
                   <Lock className="w-4 h-4" /> Secure Comms
                 </button>
-                <a 
+                <a
                   href="/resume.pdf" download
-                  className="border border-bat-red/50 bg-bat-red/10 text-bat-red hover:bg-bat-red hover:text-white font-mono text-xs px-8 py-4 uppercase tracking-widest transition-all duration-300 flex items-center gap-3"
+                  className="border border-bat-red/50 bg-bat-red/10 text-bat-red hover:bg-bat-red hover:text-white font-mono text-xs px-4 py-2 md:px-8 md:py-4 uppercase tracking-widest transition-all duration-300 flex items-center gap-3"
                 >
                   <FileText className="w-4 h-4" /> Download Resume
                 </a>
@@ -164,12 +213,12 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
                   {!logoError ? (
                     <img
                       src={`${import.meta.env.BASE_URL}batman.png`}
-                      className="w-64 h-64 object-contain transition-transform duration-500 hover:scale-110 logo-red-hue"
+                      className="w-40 h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 object-contain transition-transform duration-500 hover:scale-110 logo-red-hue"
                       alt="Logo"
                       onError={() => setLogoError(true)}
                     />
                   ) : (
-                    <img src={`${import.meta.env.BASE_URL}batman.png`} alt="Logo" className="w-64 h-64 object-contain transition-transform duration-500 hover:scale-110 logo-red-hue" />
+                    <img src={`${import.meta.env.BASE_URL}batman.png`} alt="Logo" className="w-40 h-40 md:w-52 md:h-52 lg:w-64 lg:h-64 object-contain transition-transform duration-500 hover:scale-110 logo-red-hue" />
                   )}
                 </div>
                 <div className="space-y-4 font-mono text-[10px] text-white/40 tracking-widest uppercase">
@@ -196,7 +245,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
         </section>
 
         {/* Arsenal / Skills Section */}
-        <section id="core-directives" className="py-24 border-t border-white/10">
+        <section id="core-directives" className="py-12 md:py-24 border-t border-white/10">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -204,7 +253,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
             className="flex items-center gap-4 mb-12"
           >
             <span className="font-mono text-bat-red text-xs tracking-widest">01 //</span>
-            <h2 className="font-display text-2xl uppercase tracking-widest text-white">Tactical Arsenal</h2>
+            <h2 className="font-display text-xl md:text-2xl uppercase tracking-widest text-white">Tactical Arsenal</h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -213,19 +262,19 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
               { title: "Data Engineering", desc: "Vector Databases (Qdrant), Apache Kafka, Flink, SQL, Data Wrangling, Pandas, NumPy.", icon: Database },
               { title: "Software & Ops", desc: "Python, JavaScript, React, CI/CD (GitHub Actions), Docker, Playwright QA Automation.", icon: Code }
             ].map((skill, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="hud-panel p-8 group"
+                className="hud-panel p-4 md:p-8 group"
               >
                 <div className="flex justify-between items-start mb-8">
                   <skill.icon className="w-6 h-6 text-white/60 group-hover:text-bat-red transition-colors duration-300" />
                   <span className="font-mono text-[10px] text-white/20 tracking-widest">MOD_0{i+1}</span>
                 </div>
-                <h3 className="font-display text-lg tracking-wide mb-4 text-white uppercase">{skill.title}</h3>
+                <h3 className="font-display text-base md:text-lg tracking-wide mb-4 text-white uppercase">{skill.title}</h3>
                 <p className="text-white/40 text-sm leading-relaxed font-light">{skill.desc}</p>
               </motion.div>
             ))}
@@ -233,7 +282,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
         </section>
 
         {/* Service Records / Work Experience */}
-        <section id="service-records" className="py-24 border-t border-white/10">
+        <section id="service-records" className="py-12 md:py-24 border-t border-white/10">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -241,11 +290,11 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
             className="flex items-center gap-4 mb-16"
           >
             <span className="font-mono text-bat-red text-xs tracking-widest">02 //</span>
-            <h2 className="font-display text-2xl uppercase tracking-widest text-white">Service Records</h2>
+            <h2 className="font-display text-xl md:text-2xl uppercase tracking-widest text-white">Service Records</h2>
           </motion.div>
 
           {/* Technical Timeline */}
-          <div className="space-y-12 relative before:absolute before:inset-0 before:ml-[19px] md:before:mx-auto md:before:translate-x-0 before:h-full before:w-[1px] before:bg-white/10">
+          <div className="space-y-12 relative before:absolute before:inset-0 before:ml-[14px] md:before:ml-[19px] md:before:mx-auto md:before:translate-x-0 before:h-full before:w-[1px] before:bg-white/10">
             {[
               {
                 role: "AIML Engineer",
@@ -277,10 +326,10 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
                 <div className="flex items-center justify-center w-10 h-10 rounded-none border border-white/20 bg-bat-black text-white/40 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 group-hover:border-bat-red group-hover:text-bat-red transition-colors duration-300">
                   <Briefcase className="w-4 h-4" />
                 </div>
-                <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] hud-panel p-6 md:p-8">
+                <div className="w-[calc(100%-2rem)] md:w-[calc(50%-3rem)] hud-panel p-4 md:p-8">
                   <div className="flex flex-col md:flex-row md:items-start justify-between mb-4 gap-4">
                     <div>
-                      <h3 className="font-display font-medium text-lg tracking-wide text-white uppercase mb-1">{job.role}</h3>
+                      <h3 className="font-display font-medium text-base md:text-lg tracking-wide text-white uppercase mb-1">{job.role}</h3>
                       <h4 className="font-mono text-xs tracking-widest text-white/40 uppercase">{job.company}</h4>
                     </div>
                     <span className="font-mono text-[10px] tracking-widest text-bat-red border border-bat-red/20 px-3 py-1 bg-bat-red/5 shrink-0">{job.date}</span>
@@ -293,7 +342,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
         </section>
 
         {/* Case Files / Projects Section */}
-        <section id="case-files" className="py-24 border-t border-white/10">
+        <section id="case-files" className="py-12 md:py-24 border-t border-white/10">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -301,7 +350,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
             className="flex items-center gap-4 mb-12"
           >
             <span className="font-mono text-bat-red text-xs tracking-widest">03 //</span>
-            <h2 className="font-display text-2xl uppercase tracking-widest text-white">Case Files</h2>
+            <h2 className="font-display text-xl md:text-2xl uppercase tracking-widest text-white">Case Files</h2>
           </motion.div>
 
           <div className="grid grid-cols-1 gap-4">
@@ -341,7 +390,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="group relative bg-bat-gray border border-white/5 p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-white/20 transition-all duration-300"
+                className="group relative bg-bat-gray border border-white/5 p-4 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-white/20 transition-all duration-300"
               >
                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-bat-red scale-y-0 group-hover:scale-y-100 transition-transform origin-top"></div>
                 
@@ -369,7 +418,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
         </section>
 
         {/* Clearances / Education & Certs */}
-        <section className="py-24 border-t border-white/10">
+        <section className="py-12 md:py-24 border-t border-white/10">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -377,7 +426,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
             className="flex items-center gap-4 mb-12"
           >
             <span className="font-mono text-bat-red text-xs tracking-widest">04 //</span>
-            <h2 className="font-display text-2xl uppercase tracking-widest text-white">Clearances</h2>
+            <h2 className="font-display text-xl md:text-2xl uppercase tracking-widest text-white">Clearances</h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -390,7 +439,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
                 {[
                   { degree: "BE in Artificial Intelligence & Machine Learning", school: "City Engineering College", year: "2020 - 2024", details: "CGPA: 8.5/10" }
                 ].map((edu, i) => (
-                  <div key={i} className="hud-panel p-6 group">
+                  <div key={i} className="hud-panel p-4 md:p-6 group">
                     <h4 className="font-display text-base tracking-wide text-white mb-2 uppercase">{edu.degree}</h4>
                     <p className="font-mono text-xs text-white/40 mb-4 uppercase tracking-wider">{edu.school}</p>
                     <div className="flex items-center justify-between text-[10px] font-mono tracking-widest">
@@ -427,7 +476,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="py-24 border-t border-white/10">
+        <section id="contact" className="py-12 md:py-24 border-t border-white/10">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -435,23 +484,23 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
             className="flex items-center gap-4 mb-12"
           >
             <span className="font-mono text-bat-red text-xs tracking-widest">05 //</span>
-            <h2 className="font-display text-2xl uppercase tracking-widest text-white">Secure Comms</h2>
+            <h2 className="font-display text-xl md:text-2xl uppercase tracking-widest text-white">Secure Comms</h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <button onClick={() => copyToClipboard('suhasgajanana08@gmail.com', 'Email')} className="hud-panel p-8 flex flex-col items-center justify-center gap-4 group hover:border-bat-red/50 transition-colors w-full">
+            <button onClick={() => copyToClipboard('suhasgajanana08@gmail.com', 'Email')} className="hud-panel p-4 md:p-8 flex flex-col items-center justify-center gap-4 group hover:border-bat-red/50 transition-colors w-full">
               <Mail className="w-8 h-8 text-white/40 group-hover:text-bat-red transition-colors" />
               <span className="font-mono text-xs tracking-widest text-white/60 group-hover:text-white uppercase">Email</span>
               <span className="text-sm text-white/40">suhasgajanana08@gmail.com</span>
             </button>
-            
-            <button onClick={() => copyToClipboard('9113079924', 'Phone')} className="hud-panel p-8 flex flex-col items-center justify-center gap-4 group hover:border-bat-red/50 transition-colors w-full">
+
+            <button onClick={() => copyToClipboard('9113079924', 'Phone')} className="hud-panel p-4 md:p-8 flex flex-col items-center justify-center gap-4 group hover:border-bat-red/50 transition-colors w-full">
               <Phone className="w-8 h-8 text-white/40 group-hover:text-bat-red transition-colors" />
               <span className="font-mono text-xs tracking-widest text-white/60 group-hover:text-white uppercase">Phone</span>
               <span className="text-sm text-white/40">9113079924</span>
             </button>
 
-            <a href="https://www.linkedin.com/in/suhas-gajanana" target="_blank" rel="noreferrer" className="hud-panel p-8 flex flex-col items-center justify-center gap-4 group hover:border-bat-red/50 transition-colors w-full">
+            <a href="https://www.linkedin.com/in/suhas-gajanana" target="_blank" rel="noreferrer" className="hud-panel p-4 md:p-8 flex flex-col items-center justify-center gap-4 group hover:border-bat-red/50 transition-colors w-full">
               <Linkedin className="w-8 h-8 text-white/40 group-hover:text-bat-red transition-colors" />
               <span className="font-mono text-xs tracking-widest text-white/60 group-hover:text-white uppercase">LinkedIn</span>
               <span className="text-sm text-white/40">/in/suhas-gajanana</span>

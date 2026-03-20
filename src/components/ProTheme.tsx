@@ -16,7 +16,9 @@ import {
   Phone,
   Linkedin,
   Check,
-  ExternalLink
+  ExternalLink,
+  Menu,
+  X
 } from 'lucide-react';
 
 interface ProThemeProps {
@@ -28,6 +30,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
   const [clickCount, setClickCount] = useState(0);
   const [glitchState, setGlitchState] = useState<'idle' | 'warning'>('idle');
   const [glitchFrame, setGlitchFrame] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Random Cursor Glitch Easter Egg
   useEffect(() => {
@@ -141,18 +144,56 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
             <button onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-indigo-600 transition-colors">Projects</button>
             <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-indigo-600 transition-colors">Contact</button>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             <button
               onClick={toggleTheme}
               className="group flex items-center p-2 rounded-full transition-all hover:[filter:drop-shadow(0_0_16px_rgba(229,9,20,0.9))]"
             >
               <img src={`${import.meta.env.BASE_URL}batman.png`} alt="Dark Mode" className="w-9 h-9 object-contain bat-spin transition-transform duration-300 group-hover:scale-150" />
             </button>
+            {/* Hamburger button — mobile only */}
+            <button
+              onClick={() => setMenuOpen(prev => !prev)}
+              className="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile drawer */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden overflow-hidden border-t border-slate-200 bg-white/95 backdrop-blur-md"
+            >
+              <div className="flex flex-col px-6 py-3 text-sm font-medium text-slate-600">
+                {[
+                  { label: 'Skills', id: 'skills' },
+                  { label: 'Experience', id: 'experience' },
+                  { label: 'Projects', id: 'projects' },
+                  { label: 'Contact', id: 'contact' },
+                ].map(({ label, id }) => (
+                  <button
+                    key={id}
+                    onClick={() => { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); setMenuOpen(false); }}
+                    className="text-left py-3 border-b border-slate-100 hover:text-indigo-600 transition-colors"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
-      <main className="pt-32 pb-24 px-6 max-w-5xl mx-auto">
+      <main className="pt-16 md:pt-24 pb-24 px-4 md:px-6 max-w-5xl mx-auto">
         
         {/* Hero Section */}
         <section className="min-h-[70vh] flex flex-col justify-center">
@@ -170,7 +211,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
               Available for new opportunities
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900 mb-6">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold tracking-tight text-slate-900 mb-6">
               AI/ML Engineer building scalable intelligence.
             </h1>
             
@@ -204,7 +245,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
         </section>
 
         {/* Skills Section */}
-        <section id="skills" className="py-20 border-t border-slate-200">
+        <section id="skills" className="py-10 md:py-20 border-t border-slate-200">
           <div className="mb-12">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-4">Technical Expertise</h2>
             <p className="text-slate-600 max-w-2xl">Core competencies across the machine learning lifecycle and modern software engineering.</p>
@@ -216,7 +257,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
               { title: "Data Engineering", desc: "Vector Databases (Qdrant), Apache Kafka, Flink, SQL, Data Wrangling, Pandas, NumPy.", icon: Database },
               { title: "Software & Ops", desc: "Python, JavaScript, React, CI/CD (GitHub Actions), Docker, Playwright QA Automation.", icon: Code }
             ].map((skill, i) => (
-              <div key={i} className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <div key={i} className="bg-white p-4 md:p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                 <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-6">
                   <skill.icon className="w-6 h-6" />
                 </div>
@@ -228,7 +269,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
         </section>
 
         {/* Experience Section */}
-        <section id="experience" className="py-20 border-t border-slate-200">
+        <section id="experience" className="py-10 md:py-20 border-t border-slate-200">
           <div className="mb-12">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-4">Work Experience</h2>
           </div>
@@ -254,7 +295,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
                 desc: "Developed sentiment analysis models (Logistic Regression, Naive Bayes, Random Forest) achieving up to 86% accuracy. Enhanced performance through advanced data pre-processing techniques."
               }
             ].map((job, i) => (
-              <div key={i} className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-start gap-6">
+              <div key={i} className="bg-white p-4 md:p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-start gap-6">
                 <div className="w-12 h-12 bg-slate-100 text-slate-600 rounded-xl flex items-center justify-center shrink-0">
                   <Briefcase className="w-5 h-5" />
                 </div>
@@ -272,7 +313,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="py-20 border-t border-slate-200">
+        <section id="projects" className="py-10 md:py-20 border-t border-slate-200">
           <div className="mb-12">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-4">Featured Projects</h2>
             <p className="text-slate-600 max-w-2xl">A selection of recent work focusing on predictive analytics and machine learning.</p>
@@ -305,7 +346,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
                 metrics: "Automated license plate recognition"
               }
             ].map((project, i) => (
-              <div key={i} className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all group">
+              <div key={i} className="bg-white p-4 md:p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all group">
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="text-xl font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">{project.name}</h3>
                   <ExternalLink className="w-5 h-5 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -325,7 +366,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
         </section>
 
         {/* Education & Certs */}
-        <section className="py-20 border-t border-slate-200">
+        <section className="py-10 md:py-20 border-t border-slate-200">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Education */}
             <div>
@@ -336,7 +377,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
                 <h2 className="text-2xl font-bold tracking-tight text-slate-900">Education</h2>
               </div>
               
-              <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+              <div className="bg-white p-4 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
                 <h4 className="text-lg font-semibold text-slate-900 mb-1">BE in Artificial Intelligence & Machine Learning</h4>
                 <p className="text-indigo-600 font-medium mb-4">City Engineering College</p>
                 <div className="flex items-center justify-between text-sm text-slate-500">
@@ -374,14 +415,14 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="py-20 border-t border-slate-200">
+        <section id="contact" className="py-10 md:py-20 border-t border-slate-200">
           <div className="mb-12 text-center">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-4">Get in Touch</h2>
             <p className="text-slate-600 max-w-2xl mx-auto">Open to new opportunities and collaborations. Feel free to reach out.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <button onClick={() => copyToClipboard('suhasgajanana08@gmail.com', 'Email')} className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all flex flex-col items-center justify-center gap-4 group">
+            <button onClick={() => copyToClipboard('suhasgajanana08@gmail.com', 'Email')} className="bg-white p-4 md:p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all flex flex-col items-center justify-center gap-4 group">
               <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Mail className="w-5 h-5" />
               </div>
@@ -390,8 +431,8 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
                 <span className="text-sm text-slate-500">suhasgajanana08@gmail.com</span>
               </div>
             </button>
-            
-            <button onClick={() => copyToClipboard('9113079924', 'Phone')} className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all flex flex-col items-center justify-center gap-4 group">
+
+            <button onClick={() => copyToClipboard('9113079924', 'Phone')} className="bg-white p-4 md:p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all flex flex-col items-center justify-center gap-4 group">
               <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Phone className="w-5 h-5" />
               </div>
@@ -401,7 +442,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
               </div>
             </button>
 
-            <a href="https://www.linkedin.com/in/suhas-gajanana" target="_blank" rel="noreferrer" className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all flex flex-col items-center justify-center gap-4 group">
+            <a href="https://www.linkedin.com/in/suhas-gajanana" target="_blank" rel="noreferrer" className="bg-white p-4 md:p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all flex flex-col items-center justify-center gap-4 group">
               <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Linkedin className="w-5 h-5" />
               </div>
