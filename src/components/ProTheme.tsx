@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Terminal, 
-  Shield, 
-  Briefcase, 
-  ChevronRight, 
-  Github, 
+import {
+  Terminal,
+  Shield,
+  Briefcase,
+  ChevronRight,
+  Github,
   Mail,
   Database,
   Brain,
@@ -26,218 +26,8 @@ interface ProThemeProps {
 export default function ProTheme({ toggleTheme }: ProThemeProps) {
   const [toast, setToast] = useState<string | null>(null);
   const [clickCount, setClickCount] = useState(0);
-  const [glitchState, setGlitchState] = useState<'idle' | 'warning' | 'bat'>('idle');
+  const [glitchState, setGlitchState] = useState<'idle' | 'warning'>('idle');
   const [glitchFrame, setGlitchFrame] = useState(0);
-
-  // Joker Card State
-  const cardWrapRef = useRef<HTMLDivElement>(null);
-  const peekStageRef = useRef(0);
-  const [isJokerModalOpen, setIsJokerModalOpen] = useState(false);
-  const [isCollapsing, setIsCollapsing] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  // Joker Card Scroll Logic
-  useEffect(() => {
-    const updateCardOnScroll = () => {
-      if (isCollapsing || isJokerModalOpen) return;
-      
-      const scrollY = window.scrollY;
-      const totalH = document.body.scrollHeight - window.innerHeight;
-      if (totalH <= 0) return;
-      
-      const pct = scrollY / totalH;
-      const cardWrap = cardWrapRef.current;
-      if (!cardWrap) return;
-
-      if (pct > 0.08 && peekStageRef.current < 1) {
-        peekStageRef.current = 1;
-        cardWrap.style.bottom = '-120px';
-        cardWrap.style.transform = 'translateX(-50%) rotate(-12deg)';
-
-        setTimeout(() => {
-          if (peekStageRef.current === 1) {
-            cardWrap.style.bottom = '-200px';
-          }
-        }, 2200);
-      }
-
-      if (pct > 0.30 && peekStageRef.current < 2) {
-        peekStageRef.current = 2;
-        cardWrap.style.bottom = '-50px';
-
-        setTimeout(() => { cardWrap.style.transform = 'translateX(-50%) rotate(6deg)'; }, 0);
-        setTimeout(() => { cardWrap.style.transform = 'translateX(-50%) rotate(-6deg)'; }, 600);
-        setTimeout(() => { cardWrap.style.transform = 'translateX(-50%) rotate(3deg)'; }, 1000);
-        setTimeout(() => {
-          if (peekStageRef.current === 2) {
-            cardWrap.style.bottom = '-200px';
-          }
-        }, 1600);
-      }
-
-      if (pct > 0.55 && peekStageRef.current < 3) {
-        peekStageRef.current = 3;
-        cardWrap.style.bottom = '20px';
-        cardWrap.style.transform = 'translateX(-50%) rotate(-3deg)';
-
-        setTimeout(() => { cardWrap.style.transform = 'translateX(-50%) rotate(3deg)'; }, 800);
-        setTimeout(() => { cardWrap.style.transform = 'translateX(-50%) rotate(-2deg)'; }, 1400);
-        setTimeout(() => { cardWrap.style.transform = 'translateX(-50%) rotate(0deg)'; }, 2000);
-      }
-    };
-
-    window.addEventListener('scroll', updateCardOnScroll);
-    return () => window.removeEventListener('scroll', updateCardOnScroll);
-  }, [isCollapsing, isJokerModalOpen]);
-
-  const openJokerModal = () => {
-    if (peekStageRef.current < 3) return;
-    setIsJokerModalOpen(true);
-  };
-
-  const acceptJoker = () => {
-    setIsJokerModalOpen(false);
-    
-    const cardWrap = cardWrapRef.current;
-    if (cardWrap) {
-      cardWrap.style.transition = 'all 0.5s cubic-bezier(0.4,0,0.2,1)';
-      cardWrap.style.transform = 'translateX(-50%) rotate(720deg) scale(0) translateY(-200px)';
-      cardWrap.style.opacity = '0';
-    }
-
-    setTimeout(triggerCollapse, 500);
-  };
-
-  const triggerCollapse = () => {
-    setIsCollapsing(true);
-    
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    if (!ctx) return;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // Offscreen canvas to draw the bat shape
-    const offscreen = document.createElement('canvas');
-    offscreen.width = canvas.width;
-    offscreen.height = canvas.height;
-    const octx = offscreen.getContext('2d', { willReadFrequently: true });
-    if (!octx) return;
-
-    const fontSize = Math.min(canvas.width, canvas.height) * 0.8;
-    octx.font = `${fontSize}px sans-serif`;
-    octx.textAlign = 'center';
-    octx.textBaseline = 'middle';
-    octx.fillText('🦇', canvas.width / 2, canvas.height / 2);
-
-    const imgData = octx.getImageData(0, 0, canvas.width, canvas.height).data;
-
-    const pixelSize = 12;
-    const cols = Math.ceil(canvas.width / pixelSize);
-    const rows = Math.ceil(canvas.height / pixelSize);
-    
-    const pixels: any[] = [];
-    
-    for (let y = 0; y < rows; y++) {
-      for (let x = 0; x < cols; x++) {
-        const px = Math.floor(x * pixelSize + pixelSize / 2);
-        const py = Math.floor(y * pixelSize + pixelSize / 2);
-        const alphaIndex = (py * canvas.width + px) * 4 + 3;
-        
-        const isBat = imgData[alphaIndex] > 128;
-        
-        let color = '';
-        if (isBat) {
-          const rand = Math.random();
-          color = rand > 0.7 ? '#000000' : (rand > 0.3 ? '#1e293b' : '#0f172a');
-        } else {
-          const rand = Math.random();
-          color = rand > 0.8 ? '#e2e8f0' : (rand > 0.4 ? '#f1f5f9' : '#f8fafc');
-        }
-        
-        pixels.push({
-          x: x * pixelSize,
-          y: y * pixelSize,
-          vx: (Math.random() - 0.5) * 3,
-          vy: (Math.random() - 0.5) * 3,
-          gravity: 0.15 + Math.random() * 0.2,
-          alpha: 0,
-          targetAlpha: 1,
-          color: color,
-          isBat: isBat,
-          appearDelay: Math.random() * 60, // 0 to 1s
-          fallDelay: isBat ? 90 + Math.random() * 30 : 180 + Math.random() * 60, // Bat: 1.5s-2s, Bg: 3s-4s
-          state: 'waiting'
-        });
-      }
-    }
-
-    let frame = 0;
-    let bgAlpha = 0;
-    
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Fade in black background before background pixels fall
-      if (frame > 150) {
-        bgAlpha = Math.min(1, bgAlpha + 0.03);
-      }
-      if (bgAlpha > 0) {
-        ctx.fillStyle = `rgba(10, 10, 10, ${bgAlpha})`;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
-      
-      let allDead = true;
-      
-      pixels.forEach(p => {
-        if (p.state === 'waiting' && frame > p.appearDelay) {
-          p.state = 'appearing';
-        }
-        if (p.state === 'appearing') {
-          p.alpha += 0.05;
-          if (p.alpha >= p.targetAlpha) {
-            p.alpha = p.targetAlpha;
-            p.state = 'static';
-          }
-        }
-        
-        if ((p.state === 'static' || p.state === 'appearing') && frame > p.fallDelay) {
-          p.state = 'falling';
-        }
-        
-        if (p.state === 'falling') {
-          p.vy += p.gravity;
-          p.y += p.vy;
-          p.x += p.vx;
-          p.alpha = Math.max(0, p.alpha - 0.005);
-        }
-        
-        if (p.alpha > 0 && p.y < canvas.height + 50) {
-          allDead = false;
-          ctx.globalAlpha = p.alpha;
-          ctx.fillStyle = p.color;
-          // Draw slightly larger to avoid subpixel gaps
-          ctx.fillRect(p.x - 0.5, p.y - 0.5, pixelSize + 1, pixelSize + 1);
-        }
-      });
-      
-      ctx.globalAlpha = 1;
-      frame++;
-      
-      if (!allDead && frame < 400) {
-        requestAnimationFrame(animate);
-      }
-    };
-    
-    animate();
-
-    setTimeout(() => {
-      toggleTheme();
-    }, 5500);
-  };
 
   // Random Cursor Glitch Easter Egg
   useEffect(() => {
@@ -308,109 +98,13 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
   };
 
   return (
-    <div className={`min-h-screen font-sans bg-slate-50 text-slate-900 selection:bg-indigo-500 selection:text-white relative ${isCollapsing ? 'overflow-hidden' : ''}`}>
-      {/* Canvas for Pixel Collapse */}
-      <canvas 
-        ref={canvasRef} 
-        className={`fixed inset-0 z-[100] pointer-events-none transition-opacity duration-500 ${isCollapsing ? 'opacity-100' : 'opacity-0'}`}
-      />
-
-      {/* Joker Card */}
-      <div 
-        ref={cardWrapRef}
-        id="card-wrap"
-        className={`fixed left-1/2 z-40 cursor-pointer ${isCollapsing ? 'pointer-events-none' : ''}`}
-        style={{
-          bottom: '-200px',
-          transform: 'translateX(-50%) rotate(-8deg)',
-          transition: 'bottom 0.9s cubic-bezier(0.34, 1.3, 0.64, 1), transform 0.6s ease-in-out, opacity 0.5s',
-          width: '120px',
-          height: '180px',
-        }}
-        onClick={openJokerModal}
-      >
-        <div className="w-full h-full bg-white rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.3)] border-4 border-white flex items-center justify-center overflow-hidden relative group">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-100 to-green-100 opacity-50"></div>
-          <img 
-            src="/joker.png" 
-            alt="Joker" 
-            className="w-full h-full object-cover relative z-10"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none';
-              e.currentTarget.nextElementSibling?.classList.remove('hidden');
-            }}
-          />
-          <span className="hidden text-6xl relative z-10 drop-shadow-md">🤡</span>
-          <div className="absolute top-2 left-2 text-red-500 font-bold text-lg leading-none z-20">J</div>
-          <div className="absolute bottom-2 right-2 text-red-500 font-bold text-lg leading-none rotate-180 z-20">J</div>
-        </div>
-      </div>
-
-      {/* Joker Modal */}
-      <AnimatePresence>
-        {isJokerModalOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4"
-          >
-            <motion.div 
-              initial={{ scale: 0.7, y: 40, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.7, y: 40, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-8 text-center relative overflow-hidden"
-            >
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-500 via-green-500 to-purple-500"></div>
-              
-              <div className="w-24 h-24 mx-auto mb-6 bg-slate-100 rounded-full flex items-center justify-center border-4 border-white shadow-lg overflow-hidden">
-                <img 
-                  src="/joker.png" 
-                  alt="Joker" 
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                  }}
-                />
-                <span className="hidden text-5xl">🤡</span>
-              </div>
-              
-              <h3 className="text-2xl font-bold text-slate-900 mb-2 font-display">Why so serious?</h3>
-              <p className="text-slate-600 mb-8">Ready to see the real world?</p>
-              
-              <div className="flex flex-col gap-3">
-                <button 
-                  onClick={acceptJoker}
-                  className="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-medium transition-colors shadow-lg shadow-purple-600/20"
-                >
-                  Ha ha ha... Yes
-                </button>
-                <button 
-                  onClick={() => setIsJokerModalOpen(false)}
-                  className="w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-medium transition-colors"
-                >
-                  No, I like it here
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <div className="min-h-screen font-sans bg-slate-50 text-slate-900 selection:bg-indigo-500 selection:text-white relative">
 
       {/* Global style to force the cursor during a glitch */}
       {glitchState === 'warning' && (
         <style>{`
           * {
             cursor: ${warningCursors[glitchFrame]}, auto !important;
-          }
-        `}</style>
-      )}
-      {glitchState === 'bat' && (
-        <style>{`
-          * {
-            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' style='font-size:24px'><text y='24'>🦇</text></svg>"), auto !important;
           }
         `}</style>
       )}
@@ -447,10 +141,13 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
             <button onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-indigo-600 transition-colors">Projects</button>
             <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-indigo-600 transition-colors">Contact</button>
           </div>
-          <div className="flex items-center gap-4">
-            <a href="/resume.pdf" download className="hidden md:flex items-center gap-2 bg-slate-900 text-white hover:bg-indigo-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">
-              <FileText className="w-4 h-4" /> Resume
-            </a>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              className="group flex items-center p-2 rounded-full transition-all hover:[filter:drop-shadow(0_0_16px_rgba(229,9,20,0.9))]"
+            >
+              <img src="/batman.png" alt="Dark Mode" className="w-9 h-9 object-contain bat-spin transition-transform duration-300 group-hover:scale-150" />
+            </button>
           </div>
         </div>
       </nav>
@@ -498,7 +195,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
                 <a href="https://github.com" target="_blank" rel="noreferrer" className="p-3 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
                   <Github className="w-5 h-5" />
                 </a>
-                <a href="https://linkedin.com/in/suhasgajanana" target="_blank" rel="noreferrer" className="p-3 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
+                <a href="https://www.linkedin.com/in/suhas-gajanana" target="_blank" rel="noreferrer" className="p-3 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
                   <Linkedin className="w-5 h-5" />
                 </a>
               </div>
@@ -694,23 +391,23 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
               </div>
             </button>
             
-            <button onClick={() => copyToClipboard('+1 (234) 567-890', 'Phone')} className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all flex flex-col items-center justify-center gap-4 group">
+            <button onClick={() => copyToClipboard('9113079924', 'Phone')} className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all flex flex-col items-center justify-center gap-4 group">
               <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Phone className="w-5 h-5" />
               </div>
               <div className="text-center">
                 <span className="block text-sm font-medium text-slate-900 mb-1">Phone</span>
-                <span className="text-sm text-slate-500">+1 (234) 567-890</span>
+                <span className="text-sm text-slate-500">9113079924</span>
               </div>
             </button>
 
-            <a href="https://linkedin.com/in/suhasgajanana" target="_blank" rel="noreferrer" className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all flex flex-col items-center justify-center gap-4 group">
+            <a href="https://www.linkedin.com/in/suhas-gajanana" target="_blank" rel="noreferrer" className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-200 transition-all flex flex-col items-center justify-center gap-4 group">
               <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Linkedin className="w-5 h-5" />
               </div>
               <div className="text-center">
                 <span className="block text-sm font-medium text-slate-900 mb-1">LinkedIn</span>
-                <span className="text-sm text-slate-500">/in/suhasgajanana</span>
+                <span className="text-sm text-slate-500">/in/suhas-gajanana</span>
               </div>
             </a>
           </div>
@@ -721,7 +418,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
           <p>© {new Date().getFullYear()} Suhas Gajanana. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-slate-900 transition-colors">GitHub</a>
-            <a href="https://linkedin.com/in/suhasgajanana" target="_blank" rel="noreferrer" className="hover:text-slate-900 transition-colors">LinkedIn</a>
+            <a href="https://www.linkedin.com/in/suhas-gajanana" target="_blank" rel="noreferrer" className="hover:text-slate-900 transition-colors">LinkedIn</a>
           </div>
         </footer>
 

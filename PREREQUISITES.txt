@@ -1,0 +1,100 @@
+============================================================
+  BATMAN PORTFOLIO WEBSITE - PREREQUISITES DOCUMENT
+============================================================
+
+------------------------------------------------------------
+1. SYSTEM REQUIREMENTS
+------------------------------------------------------------
+  - OS         : Windows / macOS / Linux
+  - Node.js    : v18 or higher (tested on v24.13.0)
+  - npm        : v9 or higher (tested on v11.8.0)
+
+  Download Node.js (includes npm): https://nodejs.org
+
+------------------------------------------------------------
+2. ENVIRONMENT SETUP
+------------------------------------------------------------
+  Create a .env.local file in the project root with:
+
+    GEMINI_API_KEY="your_gemini_api_key_here"
+    APP_URL="http://localhost:3000"
+
+  Get your Gemini API key from: https://aistudio.google.com
+  (See .env.example for reference)
+
+------------------------------------------------------------
+3. PROJECT DEPENDENCIES (installed via npm install)
+------------------------------------------------------------
+
+  RUNTIME DEPENDENCIES:
+  -------------------------------------------------------
+  Package                 Version     Purpose
+  -------------------------------------------------------
+  react                   ^19.0.0     UI framework
+  react-dom               ^19.0.0     React DOM renderer
+  vite                    ^6.2.0      Build tool & dev server
+  typescript              ~5.8.2      Type safety
+  tailwindcss             ^4.1.14     Utility-first CSS
+  @tailwindcss/vite       ^4.1.14     Tailwind Vite plugin
+  @vitejs/plugin-react    ^5.0.4      React HMR plugin
+  motion                  ^12.23.24   Animation library
+  lucide-react            ^0.546.0    SVG icon library
+  express                 ^4.21.2     Node.js server
+  dotenv                  ^17.2.3     Env variable loader
+  @google/genai           ^1.29.0     Google Gemini AI SDK
+
+  DEV DEPENDENCIES:
+  -------------------------------------------------------
+  Package                 Version     Purpose
+  -------------------------------------------------------
+  typescript              ~5.8.2      TypeScript compiler
+  tsx                     ^4.21.0     TypeScript executor
+  autoprefixer            ^10.4.21    CSS vendor prefixes
+  @types/node             ^22.14.0    Node.js type definitions
+  @types/express          ^4.17.21    Express type definitions
+
+------------------------------------------------------------
+4. INSTALLATION STEPS
+------------------------------------------------------------
+  Step 1: Install Node.js from https://nodejs.org
+
+  Step 2: Clone / download the project
+
+  Step 3: Navigate to the project directory
+            cd portfolio_website
+
+  Step 4: Install all dependencies
+            npm install
+
+  Step 5: Create .env.local and add your Gemini API key
+            GEMINI_API_KEY="your_key_here"
+
+  Step 6: Start the development server
+            npm run dev
+
+  Step 7: Open browser at http://localhost:3000
+
+------------------------------------------------------------
+5. AVAILABLE SCRIPTS
+------------------------------------------------------------
+  npm run dev        Start development server (port 3000)
+  npm run build      Build for production (outputs to dist/)
+  npm run preview    Preview the production build locally
+  npm run lint       Run TypeScript type-check (no emit)
+  npm run clean      Delete the dist/ directory
+
+------------------------------------------------------------
+6. NOTES
+------------------------------------------------------------
+  - All portfolio content (skills, experience, projects)
+    is hardcoded inside the theme components.
+    No database or CMS is required.
+
+  - The Gemini API key is only needed if AI features
+    are used. The UI themes work without it.
+
+  - HMR (Hot Module Replacement) is automatically
+    disabled when DISABLE_HMR env var is set
+    (used in AI Studio deployments).
+
+============================================================

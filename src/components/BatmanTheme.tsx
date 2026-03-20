@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Terminal, 
-  Shield, 
-  Crosshair, 
-  Briefcase, 
-  Lock, 
-  ChevronRight, 
-  Github, 
+import {
+  Terminal,
+  Shield,
+  Crosshair,
+  Briefcase,
+  Lock,
+  ChevronRight,
+  Github,
   Mail,
   Activity,
   Database,
@@ -18,7 +18,8 @@ import {
   FileText,
   Phone,
   Linkedin,
-  Check
+  Check,
+  Sun
 } from 'lucide-react';
 
 interface BatmanThemeProps {
@@ -36,7 +37,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
   };
 
   return (
-    <div className="min-h-screen font-sans selection:bg-bat-red selection:text-white relative bg-bat-black">
+    <div className="min-h-screen font-sans selection:bg-bat-red selection:text-white relative" style={{ background: 'radial-gradient(ellipse at top left, #1a0a0a 0%, #0d0000 40%, #000000 75%)' }}>
       <AnimatePresence>
         {toast && (
           <motion.div
@@ -56,17 +57,16 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative z-10">
           <div className="flex items-center gap-3">
             {/* Custom Logo Placeholder */}
-            <button onClick={toggleTheme} className="w-12 h-12 flex items-center justify-center bg-bat-gray border border-white/10 relative overflow-hidden group cursor-pointer" title="Switch to Professional Theme">
-              <div className="absolute inset-0 border-l-2 border-bat-red transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+            <button onClick={toggleTheme} className="group cursor-pointer" title="Switch to Professional Theme">
               {!logoError ? (
-                <img 
-                  src="/batman-logo.png" 
-                  alt="Logo" 
-                  className="w-8 h-8 object-contain opacity-90 group-hover:opacity-100 relative z-10 logo-red-hue"
+                <img
+                  src="/batman-logo.png"
+                  alt="Logo"
+                  className="w-24 h-24 object-contain opacity-90 group-hover:opacity-100 logo-red-hue"
                   onError={() => setLogoError(true)}
                 />
               ) : (
-                <span className="text-2xl relative z-10 drop-shadow-[0_0_8px_rgba(255,0,0,0.8)]">🦇</span>
+                <img src="/batman.png" alt="Logo" className="w-24 h-24 object-contain logo-red-hue" />
               )}
             </button>
             <span className="font-display font-bold tracking-widest text-lg uppercase text-white">
@@ -80,6 +80,13 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
             <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="text-white/60 hover:text-white transition-colors">Contact</button>
           </div>
           <div className="flex items-center gap-4">
+            <button
+              onClick={toggleTheme}
+              className="flex items-center gap-2 border border-white/20 bg-white/5 text-white/70 hover:text-white hover:border-white/40 px-4 py-2 font-mono text-xs tracking-widest uppercase transition-all duration-300"
+            >
+              <Sun className="w-4 h-4" />
+              Light
+            </button>
             <a href="/resume.pdf" download className="hidden md:flex items-center gap-2 border border-bat-red/50 bg-bat-red/10 text-bat-red hover:bg-bat-red hover:text-white px-4 py-2 font-mono text-xs tracking-widest uppercase transition-all duration-300">
               <FileText className="w-4 h-4" /> Resume
             </a>
@@ -153,17 +160,16 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
               className="hidden lg:block lg:col-span-4"
             >
               <div className="hud-panel p-8 scanline">
-                <div className="w-32 h-32 mx-auto mb-8 border border-white/10 flex items-center justify-center bg-bat-black relative group">
-                  <div className="absolute inset-0 bg-bat-red/5 group-hover:bg-bat-red/10 transition-colors"></div>
+                <div className="flex items-center justify-center mb-8">
                   {!logoError ? (
-                    <img 
-                      src="/batman-logo.png" 
-                      className="w-24 h-24 object-contain relative z-10 transition-transform duration-500 group-hover:scale-110 logo-red-hue" 
+                    <img
+                      src="/batman-logo.png"
+                      className="w-64 h-64 object-contain transition-transform duration-500 hover:scale-110 logo-red-hue"
                       alt="Logo"
                       onError={() => setLogoError(true)}
                     />
                   ) : (
-                    <span className="text-6xl relative z-10 drop-shadow-[0_0_15px_rgba(255,0,0,0.8)] transition-transform duration-500 group-hover:scale-110">🦇</span>
+                    <img src="/batman.png" alt="Logo" className="w-64 h-64 object-contain transition-transform duration-500 hover:scale-110 logo-red-hue" />
                   )}
                 </div>
                 <div className="space-y-4 font-mono text-[10px] text-white/40 tracking-widest uppercase">
@@ -439,16 +445,16 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
               <span className="text-sm text-white/40">suhasgajanana08@gmail.com</span>
             </button>
             
-            <button onClick={() => copyToClipboard('+1 (234) 567-890', 'Phone')} className="hud-panel p-8 flex flex-col items-center justify-center gap-4 group hover:border-bat-red/50 transition-colors w-full">
+            <button onClick={() => copyToClipboard('9113079924', 'Phone')} className="hud-panel p-8 flex flex-col items-center justify-center gap-4 group hover:border-bat-red/50 transition-colors w-full">
               <Phone className="w-8 h-8 text-white/40 group-hover:text-bat-red transition-colors" />
               <span className="font-mono text-xs tracking-widest text-white/60 group-hover:text-white uppercase">Phone</span>
-              <span className="text-sm text-white/40">+1 (234) 567-890</span>
+              <span className="text-sm text-white/40">9113079924</span>
             </button>
 
-            <a href="https://linkedin.com/in/suhasgajanana" target="_blank" rel="noreferrer" className="hud-panel p-8 flex flex-col items-center justify-center gap-4 group hover:border-bat-red/50 transition-colors w-full">
+            <a href="https://www.linkedin.com/in/suhas-gajanana" target="_blank" rel="noreferrer" className="hud-panel p-8 flex flex-col items-center justify-center gap-4 group hover:border-bat-red/50 transition-colors w-full">
               <Linkedin className="w-8 h-8 text-white/40 group-hover:text-bat-red transition-colors" />
               <span className="font-mono text-xs tracking-widest text-white/60 group-hover:text-white uppercase">LinkedIn</span>
-              <span className="text-sm text-white/40">/in/suhasgajanana</span>
+              <span className="text-sm text-white/40">/in/suhas-gajanana</span>
             </a>
           </div>
         </section>
