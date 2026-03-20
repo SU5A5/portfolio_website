@@ -1,0 +1,69 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@800&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+.stage {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 48px;
+  background:#07080C;
+  border-radius:16px;
+}
+@keyframes spin-cw  { to { transform: rotate(360deg);  } }
+@keyframes spin-ccw { to { transform: rotate(-360deg); } }
+.hex-ring { animation: spin-cw  32s linear infinite; transform-origin:200px 200px; transform-box:fill-box; }
+.sq-ring  { animation: spin-ccw 22s linear infinite; transform-origin:200px 200px; transform-box:fill-box; }
+</style>
+
+<div class="stage">
+  <svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="sg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%"   stop-color="#7BB8F0"/>
+        <stop offset="100%" stop-color="#3A8FE8"/>
+      </linearGradient>
+    </defs>
+
+    <circle cx="200" cy="200" r="155" fill="none" stroke="#0D2035" stroke-width="1" stroke-dasharray="2 10"/>
+
+    <g class="hex-ring">
+      <polygon points="200,42 323,113 323,255 200,326 77,255 77,113"
+        fill="#0B1929" stroke="#1E4976" stroke-width="1.5"/>
+      <polygon points="200,42 323,113 323,255 200,326 77,113 77,113"
+        fill="none" stroke="#2A6FAD" stroke-width="0.5" stroke-dasharray="4 9"/>
+      <circle cx="200" cy="42"  r="3.5" fill="#2A6FAD"/>
+      <circle cx="323" cy="113" r="3.5" fill="#2A6FAD"/>
+      <circle cx="323" cy="255" r="3.5" fill="#2A6FAD"/>
+      <circle cx="200" cy="326" r="3.5" fill="#2A6FAD"/>
+      <circle cx="77"  cy="255" r="3.5" fill="#2A6FAD"/>
+      <circle cx="77"  cy="113" r="3.5" fill="#2A6FAD"/>
+    </g>
+
+    <g class="sq-ring">
+      <rect x="115" y="115" width="170" height="170" rx="10"
+        fill="none" stroke="#1A4A78" stroke-width="1.5"
+        transform="rotate(15 200 200)"/>
+      <rect x="115" y="115" width="170" height="170" rx="10"
+        fill="none" stroke="#2A6FAD" stroke-width="0.5" stroke-dasharray="3 7"
+        transform="rotate(15 200 200)"/>
+    </g>
+
+    <polygon points="200,42 323,113 323,255 200,326 77,255 77,113"
+      fill="none" stroke="#2A6FAD" stroke-width="2"/>
+
+    <rect x="133" y="133" width="134" height="134" rx="12"
+      fill="#0B1624" stroke="#1E4976" stroke-width="1.5"/>
+    <rect x="142" y="142" width="116" height="116" rx="9"
+      fill="#0E1E30" stroke="#2060A0" stroke-width="1"/>
+
+    <text x="200" y="218"
+      text-anchor="middle"
+      font-family="'Syne', sans-serif"
+      font-weight="800"
+      font-size="58"
+      letter-spacing="4"
+      fill="url(#sg-grad)">SG</text>
+
+  </svg>
+</div>
