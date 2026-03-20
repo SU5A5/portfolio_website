@@ -146,7 +146,7 @@ export default function ProTheme({ toggleTheme }: ProThemeProps) {
               onClick={toggleTheme}
               className="group flex items-center p-2 rounded-full transition-all hover:[filter:drop-shadow(0_0_16px_rgba(229,9,20,0.9))]"
             >
-              <img src="/batman.png" alt="Dark Mode" className="w-9 h-9 object-contain bat-spin transition-transform duration-300 group-hover:scale-150" />
+              <img src={`${import.meta.env.BASE_URL}batman.png`} alt="Dark Mode" className="w-9 h-9 object-contain bat-spin transition-transform duration-300 group-hover:scale-150" />
             </button>
           </div>
         </div>

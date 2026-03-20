@@ -39,13 +39,13 @@ export default function BatSignalTransition({ onComplete }: BatSignalTransitionP
       >
         {!logoError ? (
           <img 
-            src="/batman-logo.png" 
-            alt="Bat Signal" 
+            src={`${import.meta.env.BASE_URL}batman.png`}
+            alt="Bat Signal"
             className="w-64 h-64 md:w-96 md:h-96 object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.8)]"
             onError={() => setLogoError(true)}
           />
         ) : (
-          <img src="/batman.png" alt="Bat Signal" className="w-64 h-64 md:w-96 md:h-96 object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.8)]" />
+          <img src={`${import.meta.env.BASE_URL}batman.png`} alt="Bat Signal" className="w-64 h-64 md:w-96 md:h-96 object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.8)]" />
         )}
       </motion.div>
 

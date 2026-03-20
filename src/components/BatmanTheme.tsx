@@ -60,13 +60,13 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
             <button onClick={toggleTheme} className="group cursor-pointer" title="Switch to Professional Theme">
               {!logoError ? (
                 <img
-                  src="/batman-logo.png"
+                  src={`${import.meta.env.BASE_URL}batman.png`}
                   alt="Logo"
                   className="w-24 h-24 object-contain opacity-90 group-hover:opacity-100 logo-red-hue"
                   onError={() => setLogoError(true)}
                 />
               ) : (
-                <img src="/batman.png" alt="Logo" className="w-24 h-24 object-contain logo-red-hue" />
+                <img src={`${import.meta.env.BASE_URL}batman.png`} alt="Logo" className="w-24 h-24 object-contain logo-red-hue" />
               )}
             </button>
             <span className="font-display font-bold tracking-widest text-lg uppercase text-white">
@@ -163,13 +163,13 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
                 <div className="flex items-center justify-center mb-8">
                   {!logoError ? (
                     <img
-                      src="/batman-logo.png"
+                      src={`${import.meta.env.BASE_URL}batman.png`}
                       className="w-64 h-64 object-contain transition-transform duration-500 hover:scale-110 logo-red-hue"
                       alt="Logo"
                       onError={() => setLogoError(true)}
                     />
                   ) : (
-                    <img src="/batman.png" alt="Logo" className="w-64 h-64 object-contain transition-transform duration-500 hover:scale-110 logo-red-hue" />
+                    <img src={`${import.meta.env.BASE_URL}batman.png`} alt="Logo" className="w-64 h-64 object-contain transition-transform duration-500 hover:scale-110 logo-red-hue" />
                   )}
                 </div>
                 <div className="space-y-4 font-mono text-[10px] text-white/40 tracking-widest uppercase">
