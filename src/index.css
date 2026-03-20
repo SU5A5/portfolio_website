@@ -98,6 +98,20 @@ body {
   100% { top: 110%; }
 }
 
+@keyframes bat-spin {
+  0%   { transform: scale(1.25) rotate(0deg); }
+  10%  { transform: scale(1.25) rotate(360deg); }
+  100% { transform: scale(1.25) rotate(360deg); }
+}
+
+.bat-spin {
+  animation: bat-spin 5s linear infinite;
+}
+
+.bat-spin:hover {
+  animation-play-state: paused;
+}
+
 /* Technical border */
 .tech-border {
   border-left: 2px solid var(--color-bat-red);

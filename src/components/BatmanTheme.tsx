@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Terminal, 
-  Shield, 
-  Crosshair, 
-  Briefcase, 
-  Lock, 
-  ChevronRight, 
-  Github, 
+import {
+  Terminal,
+  Shield,
+  Crosshair,
+  Briefcase,
+  Lock,
+  ChevronRight,
+  Github,
   Mail,
   Activity,
   Database,
@@ -18,7 +18,8 @@ import {
   FileText,
   Phone,
   Linkedin,
-  Check
+  Check,
+  Sun
 } from 'lucide-react';
 
 interface BatmanThemeProps {
@@ -66,7 +67,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
                   onError={() => setLogoError(true)}
                 />
               ) : (
-                <span className="text-2xl relative z-10 drop-shadow-[0_0_8px_rgba(255,0,0,0.8)]">🦇</span>
+                <img src="/batman.png" alt="Logo" className="w-8 h-8 object-contain relative z-10 drop-shadow-[0_0_8px_rgba(255,0,0,0.8)] logo-red-hue" />
               )}
             </button>
             <span className="font-display font-bold tracking-widest text-lg uppercase text-white">
@@ -80,6 +81,13 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
             <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="text-white/60 hover:text-white transition-colors">Contact</button>
           </div>
           <div className="flex items-center gap-4">
+            <button
+              onClick={toggleTheme}
+              className="flex items-center gap-2 border border-white/20 bg-white/5 text-white/70 hover:text-white hover:border-white/40 px-4 py-2 font-mono text-xs tracking-widest uppercase transition-all duration-300"
+            >
+              <Sun className="w-4 h-4" />
+              Light
+            </button>
             <a href="/resume.pdf" download className="hidden md:flex items-center gap-2 border border-bat-red/50 bg-bat-red/10 text-bat-red hover:bg-bat-red hover:text-white px-4 py-2 font-mono text-xs tracking-widest uppercase transition-all duration-300">
               <FileText className="w-4 h-4" /> Resume
             </a>
@@ -163,7 +171,7 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
                       onError={() => setLogoError(true)}
                     />
                   ) : (
-                    <span className="text-6xl relative z-10 drop-shadow-[0_0_15px_rgba(255,0,0,0.8)] transition-transform duration-500 group-hover:scale-110">🦇</span>
+                    <img src="/batman.png" alt="Logo" className="w-24 h-24 object-contain relative z-10 drop-shadow-[0_0_15px_rgba(255,0,0,0.8)] transition-transform duration-500 group-hover:scale-110 logo-red-hue" />
                   )}
                 </div>
                 <div className="space-y-4 font-mono text-[10px] text-white/40 tracking-widest uppercase">
@@ -439,16 +447,16 @@ export default function BatmanTheme({ toggleTheme }: BatmanThemeProps) {
               <span className="text-sm text-white/40">suhasgajanana08@gmail.com</span>
             </button>
             
-            <button onClick={() => copyToClipboard('+1 (234) 567-890', 'Phone')} className="hud-panel p-8 flex flex-col items-center justify-center gap-4 group hover:border-bat-red/50 transition-colors w-full">
+            <button onClick={() => copyToClipboard('9113079924', 'Phone')} className="hud-panel p-8 flex flex-col items-center justify-center gap-4 group hover:border-bat-red/50 transition-colors w-full">
               <Phone className="w-8 h-8 text-white/40 group-hover:text-bat-red transition-colors" />
               <span className="font-mono text-xs tracking-widest text-white/60 group-hover:text-white uppercase">Phone</span>
-              <span className="text-sm text-white/40">+1 (234) 567-890</span>
+              <span className="text-sm text-white/40">9113079924</span>
             </button>
 
-            <a href="https://linkedin.com/in/suhasgajanana" target="_blank" rel="noreferrer" className="hud-panel p-8 flex flex-col items-center justify-center gap-4 group hover:border-bat-red/50 transition-colors w-full">
+            <a href="https://www.linkedin.com/in/suhas-gajanana" target="_blank" rel="noreferrer" className="hud-panel p-8 flex flex-col items-center justify-center gap-4 group hover:border-bat-red/50 transition-colors w-full">
               <Linkedin className="w-8 h-8 text-white/40 group-hover:text-bat-red transition-colors" />
               <span className="font-mono text-xs tracking-widest text-white/60 group-hover:text-white uppercase">LinkedIn</span>
-              <span className="text-sm text-white/40">/in/suhasgajanana</span>
+              <span className="text-sm text-white/40">/in/suhas-gajanana</span>
             </a>
           </div>
         </section>
