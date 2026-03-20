@@ -98,6 +98,20 @@ body {
   100% { top: 110%; }
 }
 
+@keyframes bat-spin {
+  0%   { transform: scale(1.25) rotate(0deg); }
+  10%  { transform: scale(1.25) rotate(360deg); }
+  100% { transform: scale(1.25) rotate(360deg); }
+}
+
+.bat-spin {
+  animation: bat-spin 5s linear infinite;
+}
+
+.bat-spin:hover {
+  animation-play-state: paused;
+}
+
 /* Technical border */
 .tech-border {
   border-left: 2px solid var(--color-bat-red);
@@ -106,9 +120,9 @@ body {
 
 /* Red Hue Filter for Logo */
 .logo-red-hue {
-  filter: sepia(1) hue-rotate(315deg) saturate(500%) brightness(0.8) drop-shadow(0 0 8px rgba(229, 9, 20, 0.5));
+  filter: sepia(1) hue-rotate(315deg) saturate(1000%) brightness(1.1);
   transition: all 0.3s ease;
 }
 .logo-red-hue:hover {
-  filter: sepia(1) hue-rotate(315deg) saturate(600%) brightness(1) drop-shadow(0 0 15px rgba(229, 9, 20, 0.8));
+  filter: sepia(1) hue-rotate(315deg) saturate(1200%) brightness(1.3);
 }
